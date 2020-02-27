@@ -41,7 +41,11 @@ public class Recadapter extends RecyclerView.Adapter<Recadapter.ViewHolder>{
         Picasso.get().load(arrypro.get(position).getImage()).into(holder.pkimg);
         holder.pkname.setText(arrypro.get(position).getName());
 
+    }
 
+    public void setClickListener(View.OnClickListener itemlistener)
+    {
+        this.itemlistener = itemlistener;
     }
 
     @Override
@@ -61,6 +65,7 @@ public class Recadapter extends RecyclerView.Adapter<Recadapter.ViewHolder>{
             pkimg = itemview.findViewById(R.id.img_pk);
             pkname = itemview.findViewById(R.id.txt_pknm);
             itemview.setTag(this);
+            itemview.setOnClickListener(itemlistener);
         }
 
     }

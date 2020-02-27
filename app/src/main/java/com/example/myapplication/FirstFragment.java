@@ -44,6 +44,8 @@ public class FirstFragment extends Fragment {
 
         Dataservice service = RetrofitClientInstance.getRestrofitInstance().create(Dataservice.class);
 
+        navController = Navigation.findNavController(getActivity(),R.id.nav_host_fragment);
+
         Call<Pokemon> call = service.getAllPokemons();
 
         call.enqueue(new Callback<Pokemon>() {
@@ -69,6 +71,21 @@ public class FirstFragment extends Fragment {
 
     }
 
+    public View.OnClickListener onClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            RecyclerView.ViewHolder viewHolder = (RecyclerView.ViewHolder)v.getTag();
+            int position = viewHolder.getAdapterPosition();
+
+            Toast.makeText(getActivity().getApplicationContext(),parray.get(position).getName(),Toast.LENGTH_LONG).show();
+
+            Bundle  b = new Bundle();
+            b.putParcelable("data",parray.get(position));
+            navController.navigate(R.id.secondFragment,b);
+
+        }
+    };
+
     public void generateView(ArrayList<Pokemon_> pary, View view)
     {
         adapter = new Recadapter(pary,getActivity().getApplicationContext());
@@ -77,6 +94,7 @@ public class FirstFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recycle_view);
         recyclerView.setLayoutManager(manager);
         recyclerView.setAdapter(adapter);
+        adapter.setClickListener(onClickListener);
     }
 
     @Override
@@ -90,7 +108,6 @@ public class FirstFragment extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-
     }
 
 
